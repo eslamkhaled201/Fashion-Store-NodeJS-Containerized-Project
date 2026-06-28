@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+  labels:
+    app: fashion-store
+    type: deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fashion-store
+      tier: database
+  template:
+    metadata:
+      name: db-pod
+      labels:
+        app: fashion-store
+        tier: database
+    spec:
+      containers:
+      - name: backend-cont
+        image: docker.io/eslamkhaled98/ecommerce:backendV2
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: env-config
+        env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: fashion-app-secret
+                key: MYSQL_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fashion-app-secret
+                key: MYSQL_PASSWORD

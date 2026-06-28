@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deploy
+  labels:
+    app: fashion-store
+    type: deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fashion-store
+      tier: frontend
+  template:
+    metadata:
+      name: front-pod
+      labels:
+        app: fashion-store
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend-cont
+        image: docker.io/eslamkhaled98/ecommerce:frontendV1
+        ports:
+          - containerPort: 80
+        restartPolicy: OnFailure
+

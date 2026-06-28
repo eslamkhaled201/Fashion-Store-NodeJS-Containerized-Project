@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deploy
+  labels:
+    app: fashion-store
+    type: deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fashion-store
+      tier: database
+  template:
+    metadata:
+      name: db-pod
+      labels:
+        app: fashion-store
+        tier: database
+    spec:
+      volumes:
+        - name: schema-volume
+          configMap:
+            name: fashionstore-db-schema
+      containers:
+      - name: db-con
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        restartPolicy: OnFailure
+        volumeMounts:
+        - name: schema-volume
+          mountPath: /docker-entrypoint-initdb.d
+        env:
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: fashion-app-secret
+                key: MYSQL_USER
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fashion-app-secret
+                key: MYSQL_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fashion-app-secret
+                key: MYSQL_ROOT_PASSWORD
