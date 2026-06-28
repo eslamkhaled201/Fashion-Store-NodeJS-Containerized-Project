@@ -1,0 +1,34 @@
+.hero { display: grid; grid-template-columns: 1fr 1fr; min-height: 85vh; overflow: hidden; }
+.hero-content { display: flex; flex-direction: column; justify-content: center; padding: 80px 64px; background: var(--stone); }
+.hero-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 20px; }
+.hero-title { font-family: var(--font-display); font-size: clamp(48px, 6vw, 80px); line-height: 1.05; margin-bottom: 20px; }
+.hero-title em { color: var(--accent-dark); font-style: italic; }
+.hero-sub { color: var(--ink-light); font-size: 16px; margin-bottom: 36px; max-width: 320px; }
+.hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-image img { width: 100%; height: 100%; object-fit: cover; }
+
+.section-title { font-family: var(--font-display); font-size: 28px; margin-bottom: 32px; }
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; }
+.view-all { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-dark); text-decoration: underline; }
+
+.categories-strip { padding: 80px 24px; }
+.categories-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.cat-card { position: relative; overflow: hidden; border-radius: var(--radius); aspect-ratio: 3/4; display: block; }
+.cat-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.cat-card:hover img { transform: scale(1.06); }
+.cat-label { position: absolute; bottom: 20px; left: 20px; color: var(--white); font-family: var(--font-display); font-size: 22px; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+
+.featured-section { padding: 0 24px 80px; }
+
+.banner { padding: 0 24px 80px; }
+.banner-inner { background: var(--ink); color: var(--white); border-radius: 4px; padding: 64px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+.banner-eyebrow { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); }
+.banner-inner h3 { font-family: var(--font-display); font-size: 36px; }
+
+@media (max-width: 768px) {
+  .hero { grid-template-columns: 1fr; }
+  .hero-image { display: none; }
+  .hero-content { padding: 60px 24px; }
+  .categories-grid { grid-template-columns: repeat(2, 1fr); }
+  .banner-inner { padding: 40px 24px; }
+}

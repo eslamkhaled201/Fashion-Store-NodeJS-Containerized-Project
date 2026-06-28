@@ -1,0 +1,13 @@
+.products-page { padding: 40px 24px; }
+.products-header { margin-bottom: 32px; }
+.products-header h1 { font-family: var(--font-display); font-size: 36px; margin-bottom: 16px; }
+.search-bar input { max-width: 400px; margin-bottom: 12px; }
+.products-count { font-size: 14px; color: var(--ink-light); }
+.products-layout { display: grid; grid-template-columns: 220px 1fr; gap: 48px; }
+.skeleton-card { aspect-ratio: 3/4; background: var(--stone); border-radius: var(--radius); animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+.empty-state { padding: 80px; text-align: center; color: var(--ink-light); }
+.pagination { display: flex; gap: 8px; justify-content: center; margin-top: 48px; }
+.page-btn { width: 40px; height: 40px; border: 1.5px solid var(--border); background: none; border-radius: var(--radius); font-size: 14px; }
+.page-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+@media (max-width: 768px) { .products-layout { grid-template-columns: 1fr; } }

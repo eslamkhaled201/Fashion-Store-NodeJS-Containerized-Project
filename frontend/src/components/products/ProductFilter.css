@@ -1,0 +1,9 @@
+.product-filter { min-width: 220px; }
+.filter-section { border-bottom: 1px solid var(--border); padding: 20px 0; }
+.filter-section:first-child { padding-top: 0; }
+.filter-section h4 { font-family: var(--font-display); font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+.filter-section label { display: block; font-size: 13px; color: var(--ink-light); cursor: pointer; padding: 5px 0; transition: color 0.2s; }
+.filter-section label:hover, .filter-section label.active { color: var(--ink); font-weight: 600; }
+.price-inputs { display: flex; align-items: center; gap: 8px; }
+.price-inputs input { width: 80px; padding: 8px; font-size: 13px; }
+.filter-reset { width: 100%; margin-top: 20px; font-size: 12px; padding: 10px; }

@@ -1,0 +1,23 @@
+.navbar { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--border); }
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; }
+.nav-logo { font-family: var(--font-display); font-size: 22px; font-weight: 700; letter-spacing: 0.15em; color: var(--ink); }
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a { font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-light); transition: color 0.2s; }
+.nav-links a:hover { color: var(--ink); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-action-btn { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: var(--white); color: var(--ink); font-size: 13px; font-weight: 600; text-decoration: none; transition: all 0.2s ease; }
+.nav-action-btn:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+.login-btn, .logout-btn { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.login-btn:hover, .logout-btn:hover { background: var(--accent); border-color: var(--accent); }
+.nav-icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--white); border: 1px solid var(--border); color: var(--ink); position: relative; padding: 0; text-decoration: none; transition: all 0.2s ease; }
+.nav-icon-btn:hover { color: var(--accent); border-color: var(--accent); background: #fff8f3; }
+.cart-btn { position: relative; }
+.cart-icon { font-size: 20px; line-height: 1; }
+.cart-badge { position: absolute; top: -2px; right: -2px; background: var(--accent); color: var(--white); font-size: 10px; font-weight: 700; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 4px; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--ink); transition: all 0.2s; }
+@media (max-width: 768px) {
+  .nav-links { display: none; position: fixed; top: 68px; left: 0; right: 0; background: var(--white); flex-direction: column; padding: 24px; border-bottom: 1px solid var(--border); gap: 24px; }
+  .nav-links.open { display: flex; }
+  .hamburger { display: flex; }
+}

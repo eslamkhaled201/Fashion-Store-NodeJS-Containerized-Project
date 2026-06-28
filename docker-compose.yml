@@ -1,0 +1,72 @@
+services:
+  traefik:
+    image: traefik:v2.11          # Traefik uses the official image, no Dockerfile needed
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=webnet"
+      - "--entrypoints.web.address=:80"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+    ports:
+      - "0.0.0.0:80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - webnet
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: fashionstoreuser
+      MYSQL_PASSWORD: fashionstorepass
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: fashion_store
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    networks:
+      - webnet
+
+  backend:
+    image: eslamkhaled98/ecommerce:backendV2
+    ports:
+      - "5000:5000"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.backend.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+      # port 5000 matches the PORT variable in server.js
+    networks:
+      - webnet
+    volumes:
+      - ".env:/app/.env"
+    depends_on:
+      - traefik
+      - db
+
+  frontend:
+    image: eslamkhaled98/ecommerce:frontendV1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.frontend.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    environment:
+      REACT_APP_API_URL: http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - webnet
+
+volumes:
+  mysql_data:
+  
+
+networks:
+  webnet:
+    driver: bridge

@@ -1,0 +1,29 @@
+.product-detail { padding: 48px 24px 80px; }
+.pd-grid { display: grid; grid-template-columns: 1fr 480px; gap: 64px; }
+.pd-main-image { background: var(--stone); border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; }
+.pd-main-image img { width: 100%; height: 100%; object-fit: cover; }
+.pd-thumbs { display: flex; gap: 8px; margin-top: 12px; }
+.pd-thumbs img { width: 72px; height: 88px; object-fit: cover; border-radius: var(--radius); cursor: pointer; opacity: 0.6; border: 2px solid transparent; }
+.pd-thumbs img.active, .pd-thumbs img:hover { opacity: 1; border-color: var(--ink); }
+.pd-info { padding: 12px 0; }
+.pd-brand { font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 8px; }
+.pd-name { font-family: var(--font-display); font-size: 36px; margin-bottom: 16px; }
+.pd-price-row { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.pd-price { font-size: 24px; font-weight: 600; }
+.pd-compare { font-size: 18px; color: var(--ink-light); text-decoration: line-through; }
+.pd-desc { color: var(--ink-light); line-height: 1.7; margin-bottom: 28px; font-size: 15px; }
+.pd-section { margin-bottom: 24px; }
+.pd-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.size-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.size-btn { width: 48px; height: 48px; border: 1.5px solid var(--border); background: none; border-radius: var(--radius); font-size: 13px; font-weight: 500; transition: all 0.2s; }
+.size-btn:hover { border-color: var(--ink); }
+.size-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+.size-btn.out { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+.qty-control { display: inline-flex; align-items: center; border: 1.5px solid var(--border); border-radius: var(--radius); }
+.qty-control button { width: 40px; height: 40px; background: none; border: none; font-size: 18px; }
+.qty-control button:hover { background: var(--stone); }
+.qty-control span { width: 44px; text-align: center; font-weight: 600; }
+.add-to-cart-btn { width: 100%; margin: 24px 0; padding: 16px; font-size: 14px; }
+.pd-meta { display: flex; flex-direction: column; gap: 6px; }
+.pd-meta p { font-size: 13px; color: var(--ink-light); }
+@media (max-width: 900px) { .pd-grid { grid-template-columns: 1fr; } }
