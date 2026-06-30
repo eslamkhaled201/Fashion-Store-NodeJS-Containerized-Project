@@ -7,6 +7,7 @@ Full-stack fashion ecommerce built with React, Node.js, MySQL, and Kubernetes de
 ```
 Fashion-Store-NodeJS-Containerized-Project/
 ├── backend/                       # Node.js API server
+├── db/                            # fashion store database schema
 ├── frontend/                      # React SPA
 └── kubernetes/                    # Kubernetes manifests and deploy scripts
     ├── MetalLoadBalancer/         # MetalLB manifests + deploy script
@@ -45,7 +46,7 @@ Fashion-Store-NodeJS-Containerized-Project/
 ## Key folders
 
 - `backend/` — Express API, routes, auth, cart, orders and payments logic.
-- `db/` — includes database schema .
+- `db/` — includes database schema which create fashion_store and insert sample data (users , products ..)
 - `frontend/` — React app with Axios API client configured to use `/api`.
 - `kubernetes/` — Cluster manifests separated by runtime responsibility.
 
