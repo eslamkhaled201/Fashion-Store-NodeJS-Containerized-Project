@@ -45,19 +45,24 @@ Fashion-Store-NodeJS-Containerized-Project/
 ## Key folders
 
 - `backend/` — Express API, routes, auth, cart, orders and payments logic.
+- `db/` — includes database schema .
 - `frontend/` — React app with Axios API client configured to use `/api`.
 - `kubernetes/` — Cluster manifests separated by runtime responsibility.
 
 ## Local development
+
+### Database
+
+```bash
+cd db
+mysql -u root -p < schema.sql
+```
 
 ### Backend
 
 ```bash
 cd backend
 npm install
-cp .env.example .env
-# Update .env with database and Stripe values
-npm run seed
 npm run dev
 ```
 
