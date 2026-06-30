@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: traefik
+  labels:
+    app: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: traefik
+          image: traefik:v3.7
+          args:
+            - --api.dashboard=true
+            - --api.insecure=true           # exposes dashboard on :8080
+            - --ping=true                   # explicitly enable /ping endpoint
+            - --ping.entryPoint=ping        # on its own entrypoint
+            - --entryPoints.ping.address=:8082   # dedicated ping port
+            - --entryPoints.web.address=:80
+            - --entryPoints.websecure.address=:443
+            - --providers.kubernetescrd=true
+            - --providers.kubernetescrd.allowCrossNamespace=true
+            - --providers.kubernetesingress=true
+            - --global.sendanonymoususage=false
+            - --log.level=INFO
+            - --accesslog=true
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: dashboard
+              containerPort: 8080
+            - name: ping
+              containerPort: 8082
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8082
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 10

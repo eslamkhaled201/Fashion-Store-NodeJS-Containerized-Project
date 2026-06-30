@@ -1,104 +1,164 @@
 # Maison — Fashion Ecommerce Store
 
-Full-stack fashion ecommerce built with React, Node.js, and MySQL.
+Full-stack fashion ecommerce built with React, Node.js, MySQL, and Kubernetes deployment manifests.
 
-## Tech Stack
-
-- **Frontend**: React 18, React Router v6, Axios, Stripe.js, React Toastify
-- **Backend**: Node.js, Express, MySQL2, JWT Auth, Stripe, Multer
-- **Database**: MySQL
-
-## Project Structure
+## Project structure
 
 ```
-fashion-store/
-├── backend/
-│   ├── config/db.js          # MySQL connection pool
-│   ├── controllers/          # Business logic
-│   ├── middleware/           # Auth, validation
-│   ├── models/               # (extend for ORM if needed)
-│   ├── routes/               # Express route handlers
-│   ├── utils/
-│   │   ├── schema.sql        # Full DB schema
-│   │
-│   └── server.js
-└── frontend/
-    ├── public/
-    └── src/
-        ├── api/              # Axios API clients
-        ├── components/       # Reusable components
-        ├── context/          # Auth + Cart context
-        ├── hooks/            # Custom hooks
-        ├── pages/            # Page components
-        └── styles/           # Global CSS
+Fashion-Store-NodeJS-Containerized-Project/
+├── backend/                       # Node.js API server
+├── frontend/                      # React SPA
+└── kubernetes/                    # Kubernetes manifests and deploy scripts
+    ├── MetalLoadBalancer/         # MetalLB manifests + deploy script
+    │   ├── deploy-MetalLB.sh
+    │   ├── metallb-native.yaml
+    │   ├── metallb-native-13.yaml
+    │   └── metallb-config.yaml
+    ├── Secrets/                   # Kubernetes Secret manifests
+    │   ├── deploy-secrets.sh
+    │   └── secret.yml
+    ├── configMaps/                # Kubernetes ConfigMap manifests
+    │   ├── deploy-configmaps.sh
+    │   ├── db-schema.yaml
+    │   └── env-configmap.yml
+    ├── fashoinApp-deployments/    # App deployments for backend, frontend, database
+    │   ├── deploy-apps.sh
+    │   ├── backend-deploy.yml
+    │   ├── db-deploy.yml
+    │   └── frontend-deploy.yml
+    ├── services/                  # Kubernetes services and ingress rules
+    │   ├── deploy-services.sh
+    │   ├── backend-svc.yml
+    │   ├── db-svc.yml
+    │   ├── frontend-svc.yml
+    │   └── IngressRoutingRules.yaml
+    └── traefik/                  # Traefik ingress controller manifests
+        ├── deploy-traefik.sh
+        ├── kubernetes-crd-definition-v1.yml
+        ├── kubernetes-crd-rbac.yml
+        ├── traefikClusterRoleBinding.yml
+        ├── traefik-ns-account.yaml
+        ├── traefik-deployment.yaml
+        └── traefik-service.yaml
 ```
 
-## Getting Started
+## Key folders
 
-### 1. Database Setup
+- `backend/` — Express API, routes, auth, cart, orders and payments logic.
+- `frontend/` — React app with Axios API client configured to use `/api`.
+- `kubernetes/` — Cluster manifests separated by runtime responsibility.
 
-```bash
-mysql -u root -p < backend/utils/schema.sql
-```
+## Local development
 
-### 2. Backend Setup
+### Backend
 
 ```bash
 cd backend
 npm install
 cp .env.example .env
-# Edit .env with your DB credentials and Stripe keys
-npm run seed        # Load demo data
-npm run dev         # Start on port 5000
+# Update .env with database and Stripe values
+npm run seed
+npm run dev
 ```
 
-### 3. Frontend Setup
+### Frontend
 
 ```bash
 cd frontend
 npm install
-npm start           # Start on port 3000
+npm start
 ```
 
-## Features
+## Kubernetes deployment using Bash scripts
 
-- **Auth**: JWT register/login, role-based access (customer / admin)
-- **Products**: Listing with search, category filter, price filter, sort; variants (size/color); fulltext search
-- **Cart**: Persistent per user, quantity management, live total
-- **Checkout**: Address form, order creation with stock validation, subtotal/tax/shipping calc
-- **Payments**: Stripe PaymentIntents + webhook for confirmed payments
-- **Admin Dashboard**: Revenue stats, top products, order management, product CRUD
-- **Image Uploads**: Multer-powered local storage (swap for S3 in production)
+Each Kubernetes component folder includes a deploy script that applies all YAML files from that folder.
 
-## Demo Credentials
+### 1. Make scripts executable
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@fashionstore.com | admin123 |
-| Customer | jane@example.com | user1234 |
+```bash
+chmod +x kubernetes/**/*.sh
+```
 
-## API Routes
+### 2. Deploy MetalLB (load balancer)
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | /api/auth/register | — | Register |
-| POST | /api/auth/login | — | Login |
-| GET | /api/products | — | List products |
-| GET | /api/products/:slug | — | Product detail |
-| GET | /api/cart | user | Get cart |
-| POST | /api/cart | user | Add to cart |
-| POST | /api/orders | user | Create order |
-| POST | /api/payments/create-intent | user | Stripe intent |
-| GET | /api/admin/dashboard | admin | Stats |
-| GET | /api/admin/orders | admin | All orders |
-| PUT | /api/admin/orders/:id/status | admin | Update status |
+```bash
+cd kubernetes/MetalLoadBalancer
+./deploy-MetalLB.sh
+```
 
-## Production Checklist
+### 3. Deploy Traefik ingress controller
 
-- [ ] Set strong `JWT_SECRET`
-- [ ] Add real Stripe keys
-- [ ] Swap local uploads for AWS S3 or Cloudinary
-- [ ] Add HTTPS / reverse proxy (nginx)
-- [ ] Set `NODE_ENV=production`
-- [ ] Add rate limiting (`express-rate-limit`)
-- [ ] Set up DB backups
+```bash
+cd ../traefik
+./deploy-traefik.sh
+```
+
+### 4. Deploy ConfigMaps
+
+```bash
+cd ../configMaps
+./deploy-configmaps.sh
+```
+
+### 5. Deploy Secrets
+
+```bash
+cd ../Secrets
+./deploy-secrets.sh
+```
+
+### 6. Deploy application workloads
+
+```bash
+cd ../fashoinApp-deployments
+./deploy-apps.sh
+```
+
+### 7. Deploy services and ingress rules
+
+```bash
+cd ../services
+./deploy-services.sh
+```
+
+## Verify deployment
+
+From the project root or any folder, run:
+
+```bash
+kubectl get pods --all-namespaces
+kubectl get svc
+kubectl get ingress
+```
+
+If your cluster uses `fashionstore.com` as the host, ensure DNS or `/etc/hosts` points to the ingress IP.
+
+## Important configuration notes
+
+- `kubernetes/configMaps/env-configmap.yml` defines `CLIENT_URL` for backend CORS.
+- `frontend/src/api/client.js` uses Axios with `baseURL: '/api'`, so the frontend expects backend traffic on the same origin under `/api`.
+- `kubernetes/services/IngressRoutingRules.yaml` sends `/api` traffic to `backend-svc` and `/` traffic to `frontend-svc`.
+
+## Troubleshooting
+
+- If backend requests fail, verify `backend-svc` endpoints with:
+  ```bash
+  kubectl get endpoints backend-svc
+  ```
+- If Traefik is not routing ingress, check controller logs:
+  ```bash
+  kubectl logs -n default -l app=traefik
+  ```
+- If CORS fails, confirm `CLIENT_URL` matches the actual frontend origin.
+
+## Project features
+
+- JWT auth with roles
+- Product search, categories, filters
+- Cart, checkout, Stripe payments
+- Admin dashboard and product management
+- File upload via Multer
+
+## Notes
+
+For production, secure secrets, use HTTPS, and replace local file upload storage with a cloud storage provider.

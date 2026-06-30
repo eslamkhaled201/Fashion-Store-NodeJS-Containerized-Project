@@ -32,6 +32,11 @@ spec:
         - name: schema-volume
           mountPath: /docker-entrypoint-initdb.d
         env:
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: env-config
+                key: DB_NAME
           - name: MYSQL_USER
             valueFrom:
               secretKeyRef:

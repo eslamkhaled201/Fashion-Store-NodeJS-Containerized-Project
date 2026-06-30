@@ -10,13 +10,13 @@ spec:
   selector:
     matchLabels:
       app: fashion-store
-      tier: database
+      tier: backend
   template:
     metadata:
-      name: db-pod
+      name: backend-pod
       labels:
         app: fashion-store
-        tier: database
+        tier: backend
     spec:
       containers:
       - name: backend-cont

@@ -10,7 +10,7 @@ data:
   DB_USER: fashionstoreuser
   DB_PASSWORD: fashionstorepass
   JWT_EXPIRES_IN: 7d
-  CLIENT_URL: http://0.0.0.0:3000
+  CLIENT_URL: http://fashionstore.com
   UPLOAD_DIR: uploads
   JWT_SECRET: 62670817601e128654b6df1dabbd245e22441ec441936ee8eab168813f2aad46
   NODE_ENV: production

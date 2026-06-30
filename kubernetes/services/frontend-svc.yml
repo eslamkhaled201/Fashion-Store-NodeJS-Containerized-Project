@@ -6,7 +6,6 @@ metadata:
     app: fashion-store
     type: svc
 spec:
-  type: NodePort
   selector:
     app: fashion-store
     tier: frontend
@@ -14,4 +13,3 @@ spec:
   - protocol: TCP
     port: 80
     targetPort: 80
-    nodePort: 30007
